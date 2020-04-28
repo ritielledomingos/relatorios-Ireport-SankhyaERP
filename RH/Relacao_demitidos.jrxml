@@ -1,0 +1,206 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Relacao_Demitidos" language="groovy" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20">
+	<property name="ireport.zoom" value="1.771561000000001"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<parameter name="P_DTINI" class="java.sql.Timestamp">
+		<parameterDescription><![CDATA[Dt. Inicial]]></parameterDescription>
+	</parameter>
+	<parameter name="P_DTFIN" class="java.sql.Timestamp">
+		<parameterDescription><![CDATA[Dt. Final]]></parameterDescription>
+	</parameter>
+	<parameter name="P_EMPRESA" class="java.math.BigDecimal">
+		<property name="nomeTabela" value="TSIEMP"/>
+		<parameterDescription><![CDATA[Empresa]]></parameterDescription>
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<queryString>
+		<![CDATA[SELECT FUN.CODEMP || ' - ' || EMP.NOMEFANTASIA AS EMPRESA, FUN.CODFUNC, FUN.NOMEFUNC, FUN.DTDEM, FUN.CODCARGO, CAR.DESCRCARGO
+  FROM TFPFUN FUN, TFPCAR CAR, TSIEMP EMP
+ WHERE FUN.CODCARGO = CAR.CODCARGO
+   AND FUN.CODEMP = EMP.CODEMP
+   AND FUN.CODEMP = NVL($P{P_EMPRESA},FUN.CODEMP)
+   AND FUN.DTDEM BETWEEN $P{P_DTINI} AND $P{P_DTFIN}
+ ORDER BY FUN.CODEMP, FUN.NOMEFUNC]]>
+	</queryString>
+	<field name="EMPRESA" class="java.lang.String"/>
+	<field name="CODFUNC" class="java.math.BigDecimal"/>
+	<field name="NOMEFUNC" class="java.lang.String"/>
+	<field name="DTDEM" class="java.sql.Timestamp"/>
+	<field name="CODCARGO" class="java.math.BigDecimal"/>
+	<field name="DESCRCARGO" class="java.lang.String"/>
+	<variable name="CODFUNC_1" class="java.lang.Integer" calculation="Count">
+		<variableExpression><![CDATA[$F{CODFUNC}]]></variableExpression>
+	</variable>
+	<group name="G_EMPRESA">
+		<groupExpression><![CDATA[$F{EMPRESA}]]></groupExpression>
+		<groupHeader>
+			<band height="15">
+				<rectangle>
+					<reportElement x="0" y="0" width="555" height="15" forecolor="#CCCCCC" backcolor="#CCCCCC"/>
+				</rectangle>
+				<textField>
+					<reportElement x="127" y="0" width="300" height="15"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font isBold="true"/>
+					</textElement>
+					<textFieldExpression class="java.lang.String"><![CDATA[$F{EMPRESA}]]></textFieldExpression>
+				</textField>
+			</band>
+		</groupHeader>
+		<groupFooter>
+			<band height="15">
+				<staticText>
+					<reportElement x="409" y="1" width="111" height="14"/>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font isBold="true"/>
+					</textElement>
+					<text><![CDATA[Total Empresa: ]]></text>
+				</staticText>
+				<textField>
+					<reportElement x="520" y="1" width="33" height="14"/>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font isBold="true"/>
+					</textElement>
+					<textFieldExpression class="java.lang.Integer"><![CDATA[$V{G_EMPRESA_COUNT}]]></textFieldExpression>
+				</textField>
+				<line>
+					<reportElement x="441" y="1" width="114" height="1"/>
+				</line>
+			</band>
+		</groupFooter>
+	</group>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<pageHeader>
+		<band height="40" splitType="Stretch">
+			<rectangle>
+				<reportElement x="0" y="0" width="555" height="38"/>
+			</rectangle>
+			<staticText>
+				<reportElement x="182" y="5" width="190" height="31"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="16" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Relação de Demitidos]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="541" y="2" width="12" height="15"/>
+				<textElement verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<textFieldExpression class="java.lang.Integer"><![CDATA[$V{PAGE_NUMBER}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="520" y="2" width="21" height="15"/>
+				<textElement verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Pág.:]]></text>
+			</staticText>
+		</band>
+	</pageHeader>
+	<columnHeader>
+		<band height="17" splitType="Stretch">
+			<rectangle>
+				<reportElement x="0" y="1" width="555" height="15"/>
+			</rectangle>
+			<staticText>
+				<reportElement x="5" y="1" width="55" height="15"/>
+				<textElement verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Matrícula]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="60" y="1" width="212" height="15"/>
+				<textElement verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Funcionário]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="272" y="1" width="85" height="15"/>
+				<textElement verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Dt. Demissão]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="357" y="1" width="28" height="15"/>
+				<textElement verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Cód. Cargo]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="385" y="1" width="168" height="15"/>
+				<textElement verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Cargo]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="17" splitType="Stretch">
+			<textField>
+				<reportElement x="5" y="1" width="55" height="15"/>
+				<textElement verticalAlignment="Middle">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{CODFUNC}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="60" y="1" width="212" height="15"/>
+				<textElement verticalAlignment="Middle">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{NOMEFUNC}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="357" y="1" width="28" height="15"/>
+				<textElement verticalAlignment="Middle">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{CODCARGO}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="385" y="1" width="168" height="15"/>
+				<textElement verticalAlignment="Middle">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{DESCRCARGO}]]></textFieldExpression>
+			</textField>
+			<textField pattern="dd/MM/yyyy">
+				<reportElement x="272" y="1" width="85" height="15"/>
+				<textElement verticalAlignment="Middle">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression class="java.sql.Timestamp"><![CDATA[$F{DTDEM}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<summary>
+		<band height="20">
+			<staticText>
+				<reportElement x="409" y="5" width="111" height="15"/>
+				<textElement textAlignment="Right">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Total Empresa: ]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="520" y="5" width="33" height="15"/>
+				<textElement textAlignment="Right">
+					<font isBold="true"/>
+				</textElement>
+				<textFieldExpression class="java.lang.Integer"><![CDATA[$V{CODFUNC_1}]]></textFieldExpression>
+			</textField>
+			<line>
+				<reportElement x="0" y="5" width="555" height="1"/>
+			</line>
+		</band>
+	</summary>
+</jasperReport>
